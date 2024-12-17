@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Access and QR Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #video {
+            border: 1px solid black;
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+        }
+        #qrcode {
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+</head>
+<body>
+    <h1>Access Camera</h1>
+    <video id="video" autoplay></video>
+    <button id="startButton">Start Camera</button>
+    <div id="qrcode"></div>
+
+    <script>
+        const video = document.getElementById('video');
+
+        // Start camera access
+        $('#startButton').click(() => {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                    video.srcObject = stream;
+                    video.play();
+                }).catch(function(err) {
+                    console.error("Error accessing the camera: " + err);
+                });
+            } else {
+                alert("Camera access is not supported in your browser.");
+            }
+        });
+
+        // Generate QR code with a link
+        const cameraLink = window.location.href; // Adjust URL as needed
+        $('#qrcode').qrcode(cameraLink);
+    </script>
+</body>
+</html>
